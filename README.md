@@ -32,5 +32,5 @@ This dataset contains 16,791 rows, about 6,900 of which contain complete records
 Totaling to 16 columns, 6 categorical and 10 numerical.
 
 ## Research questions
-> [!IMPORTANT]
-> To do, most likely by Elias or in connjuction with his work.
+> Do higher critic scores lead to higher global sales?
+> Which genres dominate each region?
