@@ -35,7 +35,7 @@ Totaling to 16 columns, 6 categorical and 10 numerical.
 > 
 > Are higher-selling games owned by certain publishers?
 
-## Division of Work
+## Division of work
 - **Ares Gregory:** data initialization, loading, cleaning, Github documentation
 - **Arturo Calanche:** data visualization
 - **Basma Belarj:** 1 research question, `.loc`, `.iloc`, and `np.where()` functions, summary
