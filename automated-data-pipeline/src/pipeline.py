@@ -1,5 +1,7 @@
 import requests
 import pandas as pd
+import sqlite3
+from pathlib import Path
 
 BASE_URL = "https://www.freetogame.com/api"
 TAGS = [
@@ -13,6 +15,9 @@ TAGS = [
 ]
 ORDERS = ["release-date", "popularity", "alphabetical", "relevance"]
 PLATFORMS = ["windows", "browser", "all"]
+DATA_DIR = Path("../data/processed")
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 
 def validate_params(params) -> bool:
     id = params.get("id")
@@ -25,6 +30,7 @@ def validate_params(params) -> bool:
             return False
     
     return True
+
 
 def fetch_games(params):
     if not validate_params(params):
@@ -45,6 +51,7 @@ def fetch_games(params):
         "url": response_url
     }
 
+
 def parse_games(params):
     games = []
 
@@ -64,6 +71,7 @@ def parse_games(params):
 
     return games
 
+
 def parse_category_list(categories, params):
     all_games = []
 
@@ -73,6 +81,33 @@ def parse_category_list(categories, params):
         all_games.extend(games)
 
     return all_games
+
+
+def load_to_sqlite(df: pd.DataFrame) -> None:
+    db_path = DATA_DIR / "games.db"
+    conn = sqlite3.connect(db_path)
+    
+    df = df.drop_duplicates(subset=["id"])
+    
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' "
+        "AND name='games'"
+    )
+    table_exists = cursor.fetchone()
+    
+    if table_exists:
+        query = "SELECT id FROM games"
+        existing_ids = pd.read_sql_query(query, conn)['id'].tolist()
+        df = df[~df['id'].isin(existing_ids)]
+    
+    if not df.empty:
+        df.to_sql("games", conn, if_exists="append", index=False)
+    
+    report = pd.read_sql("SELECT COUNT(*) AS total_records FROM games", conn)
+    print(report)
+    
+    conn.close()
 
 
 def main():
@@ -89,7 +124,11 @@ def main():
         games = parse_games(params)
     
     df_games = pd.DataFrame(games)
+    df_games = df_games.drop_duplicates(subset=["id"])
     print(df_games.head(10))
+    
+    load_to_sqlite(df_games)
+
 
 if __name__ == "__main__":
     main()
