@@ -24,11 +24,16 @@ def validate_params(params) -> bool:
     if id and len(params) > 1:
         return False
 
-    for key, allowed in [("category", TAGS), ("sort-by", ORDERS), ("platform", PLATFORMS)]:
+    validations = [
+        ("category", TAGS),
+        ("sort-by", ORDERS),
+        ("platform", PLATFORMS)
+    ]
+    for key, allowed in validations:
         value = params.get(key)
         if value and value not in allowed:
             return False
-    
+
     return True
 
 
@@ -40,7 +45,7 @@ def fetch_games(params):
 
     url = f"{BASE_URL}/{endpoint}"
     response = requests.get(url, params=params, timeout=10)
-    
+
     data = response.json()
     status = response.status_code
     response_url = response.url
@@ -86,27 +91,27 @@ def parse_category_list(categories, params):
 def load_to_sqlite(df: pd.DataFrame) -> None:
     db_path = DATA_DIR / "games.db"
     conn = sqlite3.connect(db_path)
-    
+
     df = df.drop_duplicates(subset=["id"])
-    
+
     cursor = conn.cursor()
     cursor.execute(
         "SELECT name FROM sqlite_master WHERE type='table' "
         "AND name='games'"
     )
     table_exists = cursor.fetchone()
-    
+
     if table_exists:
         query = "SELECT id FROM games"
         existing_ids = pd.read_sql_query(query, conn)['id'].tolist()
         df = df[~df['id'].isin(existing_ids)]
-    
+
     if not df.empty:
         df.to_sql("games", conn, if_exists="append", index=False)
-    
+
     report = pd.read_sql("SELECT COUNT(*) AS total_records FROM games", conn)
     print(report)
-    
+
     conn.close()
 
 
@@ -122,11 +127,11 @@ def main():
         games = parse_category_list(categories, params)
     else:
         games = parse_games(params)
-    
+
     df_games = pd.DataFrame(games)
     df_games = df_games.drop_duplicates(subset=["id"])
     print(df_games.head(10))
-    
+
     load_to_sqlite(df_games)
 
 
