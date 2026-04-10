@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import argparse
 import sqlite3
 from pathlib import Path
 
@@ -104,6 +105,12 @@ def parse_category_list(categories, params):
 
     return all_games
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="FreeToGame data pipeline")
+    parser.add_argument("--category", nargs="+", default=["shooter", "sci-fi"])
+    parser.add_argument("--platform", choices=PLATFORMS, default="windows")
+    parser.add_argument("--sort-by", choices=ORDERS, default="alphabetical", dest="sort_by")
+    return parser.parse_args()
 
 def load_to_sqlite(df: pd.DataFrame) -> None:
     db_path = DATA_DIR / "games.db"
@@ -133,16 +140,14 @@ def load_to_sqlite(df: pd.DataFrame) -> None:
 
 
 def main():
-    params = {"category": ["shooter", "sci-fi"], "platform": "windows", "sort-by": "alphabetical"}
-
-    platform = params.get("platform")
-    if isinstance(platform, list):
-        params["platform"] = "all" if len(platform) > 1 else platform[0]
-
-    categories = params.get("category")
-    if categories and isinstance(categories, list) and len(categories) > 1:
+    args = parse_args()
+    params = {"platform": args.platform, "sort-by": args.sort_by}
+    categories = args.category
+    if len(categories) > 1:
+        params["platform"] = "all"
         games = parse_category_list(categories, params)
     else:
+        params["category"] = categories[0]
         games = parse_games(params)
 
     df_games = pd.DataFrame(games)
