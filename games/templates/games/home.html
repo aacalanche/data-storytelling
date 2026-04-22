@@ -1,7 +1,8 @@
-<!doctype html>
-<html>
-<body>
-    <h1>Home</h1>
-    <p>{{ message }}</p>
-</body>
-</html>
+{% extends "games/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Home Page</h1>
+    <p>This is the home page of the site. This uses the base template.</p>
+{% endblock %}
