@@ -1,0 +1,118 @@
+/* GameVault | CIS 4930 Group 19 */
+
+:root{
+    --gv-bg:        #0d0f14;
+    --gv-surface:   #161a24;
+    --gv-surface-2: #1e2433;
+    --gv-border:    #2a3048;
+    --gv-accent:    #e63946;
+    --gv-text:      #e8eaf0;
+    --gv-muted:     #7a849a;
+  }
+  
+  /* 1. dark background and font */
+  body{
+    background-color: var(--gv-bg);
+    color: var(--gv-text);
+    font-family: 'Barlow', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* 2. navbar blur and border */
+  .gv-navbar{
+    background-color: rgba(13, 15, 20, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gv-border);
+  }
+  
+  .gv-brand{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    color: var(--gv-text) !important;
+  }
+  
+  .gv-brand:hover { color: var(--gv-accent) !important; }
+  
+  .gv-nav-link{
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--gv-muted) !important;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .gv-nav-link:hover,
+  .gv-nav-link.active{
+    color: var(--gv-text) !important;
+    background-color: var(--gv-surface-2);
+  }
+  
+  /* 3. dark cards with hover lift */
+  .card{
+    background-color: var(--gv-surface);
+    border: 1px solid var(--gv-border);
+    color: var(--gv-text);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  
+  .card:hover{
+    border-color: var(--gv-accent);
+    transform: translateY(-3px);
+  }
+  
+  .card-header{
+    background-color: var(--gv-surface-2);
+    border-bottom: 1px solid var(--gv-border);
+  }
+  
+  /* 4. dark table with accent header */
+  .table{
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: var(--gv-surface-2);
+    --bs-table-hover-bg: rgba(230, 57, 70, 0.08);
+    --bs-table-color: var(--gv-text);
+    --bs-table-border-color: var(--gv-border);
+  }
+  
+  .table thead th{
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--gv-muted);
+    background-color: var(--gv-surface);
+    border-bottom: 2px solid var(--gv-accent);
+  }
+  
+  /* 5. dark form inputs with accent focus */
+  .form-control,
+  .form-select{
+    background-color: var(--gv-surface-2);
+    border: 1px solid var(--gv-border);
+    color: var(--gv-text);
+  }
+  
+  .form-control:focus,
+  .form-select:focus{
+    background-color: var(--gv-surface-2);
+    border-color: var(--gv-accent);
+    color: var(--gv-text);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+  }
+  
+  .form-control::placeholder { color: var(--gv-muted); }
+  
+  .btn-primary{
+    background-color: var(--gv-accent);
+    border-color: var(--gv-accent);
+  }
+  
+  .gv-footer{
+    background-color: var(--gv-surface);
+    border-top: 1px solid var(--gv-border);
+    color: var(--gv-muted);
+    font-size: 0.85rem;
+    padding: 1.25rem 0;
+  }
+  
+  .gv-main { flex: 1; padding-bottom: 3rem; }
