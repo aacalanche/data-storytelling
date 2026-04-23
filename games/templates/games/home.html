@@ -1,7 +1,11 @@
-<!doctype html>
-<html>
-<body>
-    <h1>Home</h1>
-    <p>{{ message }}</p>
-</body>
-</html>
+{% extends "games/base.html" %}
+
+{% block title %}Home — Games{% endblock %}
+
+{% block content %}
+<div class="container-xl py-5">
+  <h1>Welcome to Games</h1>
+  <p class="text-muted mt-2 mb-4">Explore video game sales and ratings across platforms, genres, and regions.</p>
+  <a href="{% url 'game_list' %}" class="btn btn-primary">Browse Games</a>
+</div>
+{% endblock %}
