@@ -7,8 +7,8 @@ def home(request):
     return render(request, "games/home.html")
 
 
-def form(request):
-    return render(request, "games/form.html")
+def game_add(request):
+    return render(request, "games/game_add.html")
 
 
 def analytics(request):
@@ -21,7 +21,7 @@ def confirm_delete(request):
 
 class GameListView(ListView):
     model = Game
-    template_name = "games/list.html"
+    template_name = "games/game_list.html"
     context_object_name = "games"
 
     def get_queryset(self):
