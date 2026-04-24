@@ -1,16 +1,17 @@
 /* Games - CIS 4930 Group 19 */
 
 :root{
-    --gv-bg:#0d0f14;
-    --gv-surface:#161a24;
-    --gv-surface-2:#1e2433;
-    --gv-border:#2a3048;
-    --gv-accent:#e63946;
-    --gv-text:#e8eaf0;
-    --gv-muted:#7a849a;
-  }
+    --gv-bg:#0b0d12;
+    --gv-surface:#171b26;
+    --gv-surface-2:#222838;
+    --gv-border:#313a55;
+
+    --gv-accent:#ff4d5a;
+
+    --gv-text:#f2f4f8;
+    --gv-muted:#a3acc2;
+}
   
-  /* 1. dark background and font */
   body{
     background-color: var(--gv-bg);
     color: var(--gv-text);
@@ -20,7 +21,6 @@
     min-height: 100vh;
   }
   
-  /* 2. navbar blur and border */
   .gv-navbar{
     background-color: rgba(13, 15, 20, 0.92);
     backdrop-filter: blur(12px);
@@ -49,7 +49,6 @@
     background-color: var(--gv-surface-2);
   }
   
-  /* 3. dark cards with hover lift */
   .card{
     background-color: var(--gv-surface);
     border: 1px solid var(--gv-border);
@@ -67,7 +66,6 @@
     border-bottom: 1px solid var(--gv-border);
   }
   
-  /* 4. dark table with accent header */
   .table{
     --bs-table-bg: transparent;
     --bs-table-striped-bg: var(--gv-surface-2);
@@ -84,7 +82,6 @@
     border-bottom: 2px solid var(--gv-accent);
   }
   
-  /* 5. dark form inputs with accent focus */
   .form-control,
   .form-select{
     background-color: var(--gv-surface-2);

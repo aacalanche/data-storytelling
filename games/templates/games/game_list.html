@@ -3,9 +3,17 @@
 {% block content %}
 <h2>Game List</h2>
 
-<p><a href="{% url 'game_add' %}">Add New Game</a> | <a href="{% url 'analytics' %}">Analytics</a></p>
+<p>
+    <a href="{% url 'game_add' %}" class="btn btn-success btn-sm me-2">
+        + Add New Game
+    </a>
 
-<table border="1">
+    <a href="{% url 'analytics' %}" class="btn btn-outline-primary btn-sm">
+        View Analytics
+    </a>
+</p>
+
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Title</th>
@@ -20,15 +28,24 @@
     <tbody>
         {% for game in games %}
         <tr>
-            <td><a href="{% url 'game_detail' game.pk %}">{{ game.title }}</a></td>
+            <td>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'game_detail' game.pk %}">
+                    {{ game.title }}
+                </a>
+            </td>
             <td>{{ game.genre.name }}</td>
             <td>{{ game.publisher.name }}</td>
             <td>{{ game.platform }}</td>
             <td>{{ game.release_date }}</td>
             <td>{{ game.global_sales }}</td>
             <td>
-                <a href="{% url 'game_edit' game.pk %}">Edit</a> |
-                <a href="{% url 'game_delete' game.pk %}">Delete</a>
+                <a href="{% url 'game_edit' game.pk %}" class="btn btn-sm btn-primary me-1">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+
+                <a href="{% url 'game_delete' game.pk %}" class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
             </td>
         </tr>
         {% empty %}
@@ -38,13 +55,29 @@
 </table>
 
 <!-- Pagination -->
-{% if page_obj.has_previous %}
-<a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-{% endif %}
+<div class="d-flex justify-content-center align-items-center mt-4 gap-2">
 
-Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    {% if page_obj.has_previous %}
+        <a class="btn btn-outline-primary btn-sm"
+           href="?page={{ page_obj.previous_page_number }}">
+            ← Previous
+        </a>
+    {% else %}
+        <span class="btn btn-outline-secondary btn-sm disabled">← Previous</span>
+    {% endif %}
 
-{% if page_obj.has_next %}
-<a href="?page={{ page_obj.next_page_number }}">Next</a>
-{% endif %}
+    <span class="px-3 py-1 border rounded">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a class="btn btn-outline-primary btn-sm"
+           href="?page={{ page_obj.next_page_number }}">
+            Next →
+        </a>
+    {% else %}
+        <span class="btn btn-outline-secondary btn-sm disabled">Next →</span>
+    {% endif %}
+
+</div>
 {% endblock %}

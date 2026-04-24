@@ -1,68 +1,153 @@
 {% extends "games/base.html" %}
 
 {% block content %}
-<h2>Analytics Dashboard</h2>
 
-<p><a href="{% url 'game_list' %}">Back to Game List</a></p>
+<h2 class="mb-4">Analytics Dashboard</h2>
 
-<h3>Overview</h3>
-<ul>
-    <li><strong>Total Games:</strong> {{ total_games }}</li>
-    <li><strong>Total Global Sales:</strong> {{ total_global_sales }} million</li>
-    <li><strong>Average Critic Score:</strong> {{ avg_critic_score }}</li>
-    <li><strong>Average User Score:</strong> {{ avg_user_score }}</li>
-</ul>
+<p class="mb-4">
+    <a class="btn btn-outline-light btn-sm me-2" href="{% url 'game_list' %}">Back to Game List</a>
+</p>
 
-<h3>Top 10 Games by Global Sales</h3>
-<ol>
-    {% for game in top_games %}
-    <li>{{ game.title }} ({{ game.platform }}) - {{ game.global_sales }}M</li>
-    {% empty %}
-    <li>No data available</li>
-    {% endfor %}
-</ol>
+<div class="row g-3 mb-3 overflow-hidden">
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h6>Total Games</h6>
+            <h3>{{ total_games }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h6>Total Sales</h6>
+            <h3>{{ total_global_sales }}M</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h6>Avg Critic Score</h6>
+            <h3>{{ avg_critic_score }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h6>Avg User Score</h6>
+            <h3>{{ avg_user_score }}</h3>
+        </div>
+    </div>
+</div>
 
-<h3>Sales by Genre</h3>
-<ul>
-    {% for item in sales_by_genre %}
-    <li>{{ item.genre__name }}: {{ item.total_sales }}M</li>
-    {% empty %}
-    <li>No data available</li>
-    {% endfor %}
-</ul>
+{{ sales_by_genre|json_script:"genre-data" }}
+{{ sales_by_platform|json_script:"platform-data" }}
+{{ regional_sales|json_script:"regional-data" }}
 
-<h3>Sales by Platform</h3>
-<ul>
-    {% for item in sales_by_platform %}
-    <li>{{ item.platform }}: {{ item.total_sales }}M</li>
-    {% empty %}
-    <li>No data available</li>
-    {% endfor %}
-</ul>
+<div class="row g-4 mb-5 overflow-hidden">
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Sales by Genre</h5>
+            <div style="height: 260px;">
+                <canvas id="genreChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-<h3>Top Publishers</h3>
-<ul>
-    {% for pub in top_publishers %}
-    <li>{{ pub.publisher__name }}: {{ pub.total_sales }}M ({{ pub.game_count }} games)</li>
-    {% empty %}
-    <li>No data available</li>
-    {% endfor %}
-</ul>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Sales by Platform</h5>
+            <div style="height: 260px;">
+                <canvas id="platformChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-<h3>Regional Sales</h3>
-<ul>
-    <li><strong>North America:</strong> {{ regional_sales.na_sales }}M</li>
-    <li><strong>Europe:</strong> {{ regional_sales.eu_sales }}M</li>
-    <li><strong>Japan:</strong> {{ regional_sales.jp_sales }}M</li>
-    <li><strong>Other:</strong> {{ regional_sales.other_sales }}M</li>
-</ul>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>Regional Sales</h5>
+            <div style="height: 260px;">
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h3>Games by Rating</h3>
-<ul>
-    {% for item in games_by_rating %}
-    <li>{{ item.rating }}: {{ item.count }} games</li>
-    {% empty %}
-    <li>No data available</li>
-    {% endfor %}
-</ul>
+<div class="card p-3 mb-4">
+    <h5>Top Games</h5>
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Platform</th>
+                <th>Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game in top_games %}
+            <tr>
+                <td>{{ game.title }}</td>
+                <td>{{ game.platform }}</td>
+                <td>{{ game.global_sales }}M</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const genreData = JSON.parse(document.getElementById('genre-data').textContent);
+const platformData = JSON.parse(document.getElementById('platform-data').textContent);
+const regionalData = JSON.parse(document.getElementById('regional-data').textContent);
+
+const genreLabels = genreData.map(x => x.genre);
+const genreValues = genreData.map(x => x.total_sales);
+
+new Chart(document.getElementById('genreChart'), {
+    type: 'bar',
+    data: {
+        labels: genreLabels,
+        datasets: [{
+            label: 'Sales',
+            data: genreValues
+        }]
+    },
+    options: {
+        maintainAspectRatio: false
+    }
+});
+
+const platformLabels = platformData.map(x => x.platform);
+const platformValues = platformData.map(x => x.total_sales);
+
+new Chart(document.getElementById('platformChart'), {
+    type: 'bar',
+    data: {
+        labels: platformLabels,
+        datasets: [{
+            label: 'Sales',
+            data: platformValues
+        }]
+    },
+    options: {
+        maintainAspectRatio: false
+    }
+});
+
+new Chart(document.getElementById('regionalChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['NA', 'EU', 'JP', 'Other'],
+        datasets: [{
+            data: [
+                regionalData.na_sales,
+                regionalData.eu_sales,
+                regionalData.jp_sales,
+                regionalData.other_sales
+            ]
+        }]
+    },
+    options: {
+        maintainAspectRatio: false
+    }
+});
+</script>
+
 {% endblock %}

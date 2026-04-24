@@ -1,96 +1,127 @@
 {% extends "games/base.html" %}
 
 {% block content %}
-<h2>{% if object %}Edit Game{% else %}Add New Game{% endif %}</h2>
+<div class="container py-4">
 
-<form method="post">
-    {% csrf_token %}
-    
-    <p>
-        <label>Title:</label><br>
-        {{ form.title }}
-        {% if form.title.errors %}{{ form.title.errors }}{% endif %}
-    </p>
-    
-    <p>
-        <label>Genre:</label><br>
-        {{ form.genre }}
-        {% if form.genre.errors %}{{ form.genre.errors }}{% endif %}
-    </p>
-    
-    <p>
-        <label>Publisher:</label><br>
-        {{ form.publisher }}
-        {% if form.publisher.errors %}{{ form.publisher.errors }}{% endif %}
-    </p>
+    <h2 class="mb-4">
+        {% if object %}Edit Game{% else %}Add New Game{% endif %}
+    </h2>
 
-    <p>
-        <label>Developer:</label><br>
-        {{ form.developer }}
-        {% if form.developer.errors %}{{ form.developer.errors }}{% endif %}
-    </p>
+    <div class="card p-4">
 
-    <p>
-        <label>Platform:</label><br>
-        {{ form.platform }}
-        {% if form.platform.errors %}{{ form.platform.errors }}{% endif %}
-    </p>
-    
-    <p>
-        <label>Year of Release:</label><br>
-        {{ form.release_date }}
-        {% if form.release_date.errors %}{{ form.release_date.errors }}{% endif %}
-    </p>
-    
-    <h3>Sales (in millions)</h3>
-    <p>
-        <label>NA Sales:</label> {{ form.na_sales }}
-        {% if form.na_sales.errors %}{{ form.na_sales.errors }}{% endif %}
-    </p>
-    <p>
-        <label>EU Sales:</label> {{ form.eu_sales }}
-        {% if form.eu_sales.errors %}{{ form.eu_sales.errors }}{% endif %}
-    </p>
-    <p>
-        <label>JP Sales:</label> {{ form.jp_sales }}
-        {% if form.jp_sales.errors %}{{ form.jp_sales.errors }}{% endif %}
-    </p>
-    <p>
-        <label>Other Sales:</label> {{ form.other_sales }}
-        {% if form.other_sales.errors %}{{ form.other_sales.errors }}{% endif %}
-    </p>
-    <p>
-        <label>Global Sales:</label> {{ form.global_sales }}
-        {% if form.global_sales.errors %}{{ form.global_sales.errors }}{% endif %}
-    </p>
-    
-    <h3>Scores</h3>
-    <p>
-        <label>Critic Score:</label> {{ form.critic_score }}
-        {% if form.critic_score.errors %}{{ form.critic_score.errors }}{% endif %}
-    </p>
-    <p>
-        <label>Critic Count:</label> {{ form.critic_count }}
-        {% if form.critic_count.errors %}{{ form.critic_count.errors }}{% endif %}
-    </p>
-    <p>
-        <label>User Score:</label> {{ form.user_score }}
-        {% if form.user_score.errors %}{{ form.user_score.errors }}{% endif %}
-    </p>
-    <p>
-        <label>User Count:</label> {{ form.user_count }}
-        {% if form.user_count.errors %}{{ form.user_count.errors }}{% endif %}
-    </p>
-    
-    <h3>Additional Info</h3>
-    <p>
-        <label>Rating:</label> {{ form.rating }}
-        {% if form.rating.errors %}{{ form.rating.errors }}{% endif %}
-    </p>
-    
-    <p>
-        <button type="submit">Save</button>
-        <a href="{% url 'game_list' %}">Cancel</a>
-    </p>
-</form>
+        <form method="post">
+            {% csrf_token %}
+
+            <h5 class="mb-3">Basic Info</h5>
+
+            <div class="mb-3">
+                <label>Title</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label>Genre</label>
+                {{ form.genre }}
+                {{ form.genre.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label>Publisher</label>
+                {{ form.publisher }}
+                {{ form.publisher.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label>Developer</label>
+                {{ form.developer }}
+                {{ form.developer.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label>Platform</label>
+                {{ form.platform }}
+                {{ form.platform.errors }}
+            </div>
+
+            <div class="mb-4">
+                <label>Year of Release</label>
+                {{ form.release_date }}
+                {{ form.release_date.errors }}
+            </div>
+
+            <h5 class="mb-3">Sales (millions)</h5>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label>NA</label>
+                    {{ form.na_sales }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>EU</label>
+                    {{ form.eu_sales }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>JP</label>
+                    {{ form.jp_sales }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>Other</label>
+                    {{ form.other_sales }}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label>Global Sales</label>
+                {{ form.global_sales }}
+            </div>
+
+            <h5 class="mb-3">Scores</h5>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label>Critic Score</label>
+                    {{ form.critic_score }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>Critic Count</label>
+                    {{ form.critic_count }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>User Score</label>
+                    {{ form.user_score }}
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label>User Count</label>
+                    {{ form.user_count }}
+                </div>
+            </div>
+
+            <h5 class="mb-3">Additional Info</h5>
+
+            <div class="mb-4">
+                <label>Rating</label>
+                {{ form.rating }}
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Save
+                </button>
+
+                <a href="{% url 'game_list' %}" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
 {% endblock %}

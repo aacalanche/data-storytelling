@@ -1,33 +1,53 @@
 {% extends "games/base.html" %}
 
 {% block content %}
-<h2>{{ game.title }}</h2>
+<div class="container py-4">
 
-<p><a href="{% url 'game_edit' game.pk %}">Edit</a> | <a href="{% url 'game_delete' game.pk %}">Delete</a> | <a href="{% url 'game_list' %}">Back to List</a></p>
+    <h2 class="mb-3">{{ game.title }}</h2>
 
-<h3>Basic Info</h3>
-<ul>
-    <li><strong>Genre:</strong> {{ game.genre.name }}</li>
-    <li><strong>Publisher:</strong> {{ game.publisher.name }}</li>
-    <li><strong>Platform:</strong> {{ game.platform }}</li>
-    <li><strong>Year of Release:</strong> {{ game.release_date|default:"N/A" }}</li>
-    <li><strong>Developer:</strong> {{ game.developer }}</li>
-    <li><strong>Rating:</strong> {{ game.rating }}</li>
-    <li><strong>Source:</strong> {{ game.source }}</li>
-</ul>
+    <div class="mb-4">
+        <a class="btn btn-sm btn-primary me-2" href="{% url 'game_edit' game.pk %}">Edit</a>
+        <a class="btn btn-sm btn-danger me-2" href="{% url 'game_delete' game.pk %}">Delete</a>
+        <a class="btn btn-sm btn-outline-light" href="{% url 'game_list' %}">Back to List</a>
+    </div>
 
-<h3>Sales (in millions)</h3>
-<ul>
-    <li><strong>NA Sales:</strong> {{ game.na_sales|default:0 }}</li>
-    <li><strong>EU Sales:</strong> {{ game.eu_sales|default:0 }}</li>
-    <li><strong>JP Sales:</strong> {{ game.jp_sales|default:0 }}</li>
-    <li><strong>Other Sales:</strong> {{ game.other_sales|default:0 }}</li>
-    <li><strong>Global Sales:</strong> {{ game.global_sales|default:0 }}</li>
-</ul>
+    <div class="card mb-4">
+        <div class="card-header">
+            Basic Info
+        </div>
+        <div class="card-body">
+            <p><strong>Genre:</strong> {{ game.genre.name }}</p>
+            <p><strong>Publisher:</strong> {{ game.publisher.name }}</p>
+            <p><strong>Platform:</strong> {{ game.platform }}</p>
+            <p><strong>Year of Release:</strong> {{ game.release_date|default:"N/A" }}</p>
+            <p><strong>Developer:</strong> {{ game.developer }}</p>
+            <p><strong>Rating:</strong> {{ game.rating }}</p>
+            <p><strong>Source:</strong> {{ game.source }}</p>
+        </div>
+    </div>
 
-<h3>Scores</h3>
-<ul>
-    <li><strong>Critic Score:</strong> {{ game.critic_score|default:"N/A" }} ({{ game.critic_count|default:0 }} reviews)</li>
-    <li><strong>User Score:</strong> {{ game.user_score|default:"N/A" }} ({{ game.user_count|default:0 }} reviews)</li>
-</ul>
+    <div class="card mb-4">
+        <div class="card-header">
+            Sales (in millions)
+        </div>
+        <div class="card-body">
+            <p><strong>NA Sales:</strong> {{ game.na_sales|default:0 }}</p>
+            <p><strong>EU Sales:</strong> {{ game.eu_sales|default:0 }}</p>
+            <p><strong>JP Sales:</strong> {{ game.jp_sales|default:0 }}</p>
+            <p><strong>Other Sales:</strong> {{ game.other_sales|default:0 }}</p>
+            <p><strong>Global Sales:</strong> {{ game.global_sales|default:0 }}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Scores
+        </div>
+        <div class="card-body">
+            <p><strong>Critic Score:</strong> {{ game.critic_score|default:"N/A" }} ({{ game.critic_count|default:0 }} reviews)</p>
+            <p><strong>User Score:</strong> {{ game.user_score|default:"N/A" }} ({{ game.user_count|default:0 }} reviews)</p>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
