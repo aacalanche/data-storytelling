@@ -1,8 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.management import call_command
+from django.views.decorators.http import require_POST
 from .models import Game, Genre, Publisher
 from .forms import GameForm
+
+
+@staff_member_required
+@require_POST
+def fetch_data_view(request):
+    call_command("fetch_data")
+    return redirect("game_list")
 
 
 def home(request):
